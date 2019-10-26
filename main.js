@@ -14,7 +14,7 @@ function getTodos(){
 //POST REQUEST
 function addTodos(){
     
-  axios.post('https://jsonplaceholder.typicode.com/todos',
+  axios.post('https://jsonplaceholder.typicode.com/todos/1',
   {
     title: 'New Todo',
     completed: false
@@ -24,18 +24,36 @@ function addTodos(){
 }
 
 //PUT/PATCH REQUESTS
+//updates are focused on an individual item
 function updateTodos(){
-    console.log('PUT/PATCH Request');
+    axios.patch('https://jsonplaceholder.typicode.com/todos/1',{
+      title: 'Updated Todo',
+      completed: true
+    })
+    .then(res => showOutput(res))
+    .catch(err => console.error(err));
 }
 
 //DELETE Requests
+//Delete request need to have an id for delete or else everything will be deleted
 function removeTodos(){
-    console.log('DELETE Requests');
+    axios.delete('https://jsonplaceholder.typicode.com/todos/1',{
+      title: 'Data Has Been Deleted'
+    })
+    .then(res => showOutput(res))
+    .catch(err => console.error(err));
 }
 
 // Simultaneous DATA
 function getData(){
-    console.log('Simultaneous Requests');
+    axios.all([
+      axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5'),
+      axios.get('https://jsonplaceholder.typicode.com/posts?_limit=5')
+    ])
+    .then(
+      axios.spread((todos, posts) => showOutput(posts))
+    )
+    .catch(err => console.error(err));
 }
 
 //Custom Headers
